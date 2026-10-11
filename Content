@@ -1,0 +1,399 @@
+# ActiveHalo.g<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>activehalo | Portfolio</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
+
+    body {
+      background-color: #09090b;
+      color: #e4e4e7;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+
+    .font-mono-code {
+      font-family: 'Fira Code', monospace;
+    }
+
+    .purple-glow-text {
+      text-shadow: 0 0 16px rgba(166, 0, 255, 0.5), 0 0 32px rgba(168, 85, 247, 0.25);
+    }
+
+    .glow-hover {
+      transition: all 0.2s ease;
+    }
+
+    .glow-hover:hover {
+      color: #f3e8ff !important;
+      text-shadow: 0 0 10px rgba(192, 132, 252, 0.8);
+    }
+
+    .glow-hover:hover .ext-icon {
+      transform: translate(2px, -2px);
+      color: #e9d5ff !important;
+    }
+
+    .purple-underline {
+      position: relative;
+    }
+
+    .purple-underline::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 1px;
+      bottom: -2px;
+      left: 0;
+      background-color: #a600ff;
+      transition: width 0.25s ease;
+      box-shadow: 0 0 6px #a600ff;
+    }
+
+    .purple-underline:hover::after {
+      width: 100%;
+    }
+
+    .line-row {
+      transition: background-color 0.2s ease, transform 0.2s ease;
+      border-bottom: 1px solid rgba(168, 85, 247, 0.12);
+    }
+
+    .line-row:hover {
+      background-color: rgba(166, 0, 255, 0.03);
+      transform: translateX(4px);
+    }
+
+    .glow-line-separator {
+      height: 1px;
+      border: 0;
+      background: linear-gradient(90deg, #a600ff 0%, rgba(168, 85, 247, 0.4) 50%, transparent 100%);
+      box-shadow: 0 0 10px rgba(166, 0, 255, 0.4);
+    }
+
+    .ext-icon {
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .skill-tag {
+      background-color: rgba(166, 0, 255, 0.08);
+      border: 1px solid rgba(168, 85, 247, 0.25);
+      color: #d8b4fe;
+      transition: all 0.2s ease;
+    }
+
+    .skill-tag:hover {
+      background-color: rgba(166, 0, 255, 0.22);
+      border-color: #a600ff;
+      box-shadow: 0 0 12px rgba(166, 0, 255, 0.4);
+      transform: translateY(-2px);
+    }
+
+    #toast-msg {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #09090b;
+      border: 1px solid #a600ff;
+      box-shadow: 0 0 20px rgba(166, 0, 255, 0.4);
+      color: #f3e8ff;
+      padding: 10px 18px;
+      border-radius: 6px;
+      font-family: 'Fira Code', monospace;
+      font-size: 13px;
+      opacity: 0;
+      transform: translateY(12px);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    #toast-msg.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body class="min-h-screen py-10 px-4 sm:px-8 max-w-4xl mx-auto">
+
+  <header class="mb-8">
+    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+      <div class="flex-1">
+        <h1 class="text-2xl sm:text-3xl font-bold text-[#a855f7] leading-snug purple-glow-text">
+          Hello I am activehalo a developer who knows ABOUT every coding lanquage I accept usd money for jobs :]
+        </h1>
+        <p class="mt-2 text-sm text-purple-300/80 font-mono-code flex items-center gap-2">
+          <span class="text-gray-400">[he/him]</span>
+          <span class="text-purple-500">•</span>
+          <span class="text-purple-300">pretty young developer</span>
+        </p>
+      </div>
+
+      <div class="flex items-center gap-3 bg-[#0d0d12] border border-[#a600ff]/30 p-2.5 pr-4 rounded-xl shrink-0 font-mono-code self-stretch md:self-auto">
+        <div class="relative">
+          <img id="discord-avatar" src="https://cdn.discordapp.com/embed/avatars/0.png" alt="activehalo avatar" class="w-12 h-12 rounded-full border border-[#a855f7]/40 object-cover">
+          <span id="discord-status-dot" class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-gray-600 border-2 border-[#0d0d12] rounded-full"></span>
+        </div>
+        <div class="flex flex-col justify-center">
+          <span class="text-[10px] text-purple-400 font-bold tracking-widest uppercase">// DISCORD</span>
+          <span class="text-sm font-bold text-gray-100">activehalosalt</span>
+          <span id="discord-status-text" class="text-xs text-gray-400">Loading status...</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-wrap items-center gap-2 mt-6 font-mono-code text-xs">
+      <span class="text-gray-400 font-medium mr-1 text-sm flex items-center gap-1.5">
+        <i class="fa-solid fa-code text-[#a855f7]"></i> Languages:
+      </span>
+      <span class="skill-tag px-2.5 py-1 rounded">JavaScript</span>
+      <span class="skill-tag px-2.5 py-1 rounded">TypeScript</span>
+      <span class="skill-tag px-2.5 py-1 rounded">Python</span>
+      <span class="skill-tag px-2.5 py-1 rounded">HTML5</span>
+      <span class="skill-tag px-2.5 py-1 rounded">CSS3</span>
+      <span class="skill-tag px-2.5 py-1 rounded">Node.js</span>
+      <span class="skill-tag px-2.5 py-1 rounded">C++</span>
+      <span class="skill-tag px-2.5 py-1 rounded">Java</span>
+      <span class="skill-tag px-2.5 py-1 rounded">Lua</span>
+    </div>
+  </header>
+
+  <main class="space-y-8">
+
+    <!-- My Creations -->
+    <section>
+      <hr class="glow-line-separator my-4">
+      <h2 class="text-base sm:text-lg font-bold uppercase tracking-wider text-[#a855f7] font-mono-code mb-3">
+        // my creations
+      </h2>
+
+      <div class="font-mono-code text-sm sm:text-base">
+        <div class="line-row py-3 px-2 flex flex-wrap items-center justify-between gap-2">
+          <div class="flex items-center gap-3">
+            <i class="fa-solid fa-store text-[#a855f7] w-5"></i>
+            <span class="text-gray-300">My creations so far</span>
+          </div>
+          <div class="flex items-center gap-3 ml-auto sm:ml-0">
+            <a href="https://stars-shop.netlify.app/" target="_blank" rel="noopener noreferrer" class="text-[#c084fc] font-bold purple-underline glow-hover inline-flex items-center gap-1.5">
+              <span>ST@R'S SHOP</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-xs text-[#a600ff] ext-icon"></i>
+            </a>
+            <button onclick="copyText('https://stars-shop.netlify.app/', 'ST@R\'S SHOP URL')" class="text-zinc-400 hover:text-[#a600ff] transition-colors p-1" title="Copy Link">
+              <i class="fa-regular fa-copy text-xs"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Socials Section -->
+    <section>
+      <hr class="glow-line-separator my-4">
+      <h2 class="text-base sm:text-lg font-bold uppercase tracking-wider text-[#a855f7] font-mono-code mb-3">
+        // socials
+      </h2>
+
+      <div class="font-mono-code text-sm sm:text-base">
+        
+        <!-- Gmail -->
+        <div class="line-row py-3 px-2 flex flex-wrap items-center justify-between gap-2">
+          <div class="flex items-center gap-3">
+            <i class="fa-solid fa-envelope text-[#a855f7] w-5"></i>
+            <span class="text-gray-400">Gmail:</span>
+          </div>
+          <div class="flex items-center gap-3 ml-auto sm:ml-0">
+            <a href="mailto:antibioticantcolony@gmail.com" target="_blank" rel="noopener noreferrer" class="text-[#c084fc] glow-hover purple-underline font-semibold inline-flex items-center gap-1.5">
+              <span>antibioticantcolony@gmail.com</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-xs text-[#a600ff] ext-icon"></i>
+            </a>
+            <button onclick="copyText('antibioticantcolony@gmail.com', 'Gmail address')" class="text-zinc-400 hover:text-[#a600ff] transition-colors p-1" title="Copy Gmail">
+              <i class="fa-regular fa-copy text-xs"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Discord -->
+        <div class="line-row py-3 px-2 flex flex-wrap items-center justify-between gap-2">
+          <div class="flex items-center gap-3">
+            <i class="fa-brands fa-discord text-[#a855f7] w-5"></i>
+            <span class="text-gray-400">Discord:</span>
+          </div>
+          <div class="flex flex-wrap items-center gap-3 ml-auto sm:ml-0">
+            <div class="flex items-center gap-1.5">
+              <span class="text-gray-200 font-semibold bg-zinc-900 px-2 py-0.5 rounded border border-zinc-800">activehalosalt</span>
+              <button onclick="copyText('activehalosalt', 'Discord handle')" class="text-zinc-400 hover:text-[#a600ff] transition-colors p-1" title="Copy Handle">
+                <i class="fa-regular fa-copy text-xs"></i>
+              </button>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <a href="https://discord.gg/sGPm2NzeU5" target="_blank" rel="noopener noreferrer" class="text-[#c084fc] glow-hover purple-underline inline-flex items-center gap-1.5">
+                <span>my server</span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-xs text-[#a600ff] ext-icon"></i>
+              </a>
+              <button onclick="copyText('https://discord.gg/sGPm2NzeU5', 'Server URL')" class="text-zinc-400 hover:text-[#a600ff] transition-colors p-1" title="Copy Server URL">
+                <i class="fa-regular fa-copy text-xs"></i>
+              </button>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <a href="https://discord.gg/HkUQeC22GH" target="_blank" rel="noopener noreferrer" class="text-[#c084fc] glow-hover purple-underline inline-flex items-center gap-1.5">
+                <span>my gen</span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-xs text-[#a600ff] ext-icon"></i>
+              </a>
+              <button onclick="copyText('https://discord.gg/HkUQeC22GH', 'Gen URL')" class="text-zinc-400 hover:text-[#a600ff] transition-colors p-1" title="Copy Gen URL">
+                <i class="fa-regular fa-copy text-xs"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- TikTok -->
+        <div class="line-row py-3 px-2 flex flex-wrap items-center justify-between gap-2">
+          <div class="flex items-center gap-3">
+            <i class="fa-brands fa-tiktok text-[#a855f7] w-5"></i>
+            <span class="text-gray-400">TikTok:</span>
+          </div>
+          <div class="flex items-center gap-3 ml-auto sm:ml-0">
+            <a href="https://www.tiktok.com/@activehalo40912?_r=1&_t=ZT-9ASIThpDVnB" target="_blank" rel="noopener noreferrer" class="text-[#c084fc] glow-hover purple-underline font-semibold inline-flex items-center gap-1.5">
+              <span>ActiveHalo</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-xs text-[#a600ff] ext-icon"></i>
+            </a>
+            <button onclick="copyText('https://www.tiktok.com/@activehalo40912?_r=1&_t=ZT-9ASIThpDVnB', 'TikTok URL')" class="text-zinc-400 hover:text-[#a600ff] transition-colors p-1" title="Copy TikTok URL">
+              <i class="fa-regular fa-copy text-xs"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Twitter -->
+        <div class="line-row py-3 px-2 flex flex-wrap items-center justify-between gap-2">
+          <div class="flex items-center gap-3">
+            <i class="fa-brands fa-x-twitter text-[#a855f7] w-5"></i>
+            <span class="text-gray-400">Twitter:</span>
+          </div>
+          <div class="flex items-center gap-3 ml-auto sm:ml-0">
+            <span class="text-xs text-gray-500 italic font-sans">prob won't respond</span>
+            <a href="https://x.com/ActiveHalo" target="_blank" rel="noopener noreferrer" class="text-[#c084fc] glow-hover purple-underline font-semibold inline-flex items-center gap-1.5">
+              <span>x.com/ActiveHalo</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-xs text-[#a600ff] ext-icon"></i>
+            </a>
+            <button onclick="copyText('https://x.com/ActiveHalo', 'Twitter URL')" class="text-zinc-400 hover:text-[#a600ff] transition-colors p-1" title="Copy Twitter URL">
+              <i class="fa-regular fa-copy text-xs"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- YouTube -->
+        <div class="line-row py-3 px-2 flex flex-wrap items-center justify-between gap-2">
+          <div class="flex items-center gap-3">
+            <i class="fa-brands fa-youtube text-[#a855f7] w-5"></i>
+            <span class="text-gray-400">YT:</span>
+          </div>
+          <div class="flex items-center gap-3 ml-auto sm:ml-0">
+            <a href="https://youtube.com/@activehalo?" target="_blank" rel="noopener noreferrer" class="text-[#c084fc] glow-hover purple-underline font-semibold inline-flex items-center gap-1.5">
+              <span>ActiveHalo Yt</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-xs text-[#a600ff] ext-icon"></i>
+            </a>
+            <button onclick="copyText('https://youtube.com/@activehalo?', 'YouTube URL')" class="text-zinc-400 hover:text-[#a600ff] transition-colors p-1" title="Copy YouTube URL">
+              <i class="fa-regular fa-copy text-xs"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Guns Page -->
+        <div class="line-row py-3 px-2 flex flex-wrap items-center justify-between gap-2">
+          <div class="flex items-center gap-3">
+            <i class="fa-solid fa-crosshairs text-[#a855f7] w-5"></i>
+            <span class="text-gray-400">Guns page:</span>
+          </div>
+          <div class="flex items-center gap-3 ml-auto sm:ml-0">
+            <a href="https://guns.lol/ActiveHalo" target="_blank" rel="noopener noreferrer" class="text-[#c084fc] glow-hover purple-underline font-semibold inline-flex items-center gap-1.5">
+              <span>guns.lol/ActiveHalo</span>
+              <i class="fa-solid fa-arrow-up-right-from-square text-xs text-[#a600ff] ext-icon"></i>
+            </a>
+            <button onclick="copyText('https://guns.lol/ActiveHalo', 'Guns URL')" class="text-zinc-400 hover:text-[#a600ff] transition-colors p-1" title="Copy Guns URL">
+              <i class="fa-regular fa-copy text-xs"></i>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <div id="toast-msg">
+    <i class="fa-solid fa-check text-[#a600ff] mr-2"></i>
+    <span id="toast-text">Copied!</span>
+  </div>
+
+  <script>
+    function copyText(text, name) {
+      var textarea = document.createElement("textarea");
+      textarea.value = text;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textarea);
+
+      var toast = document.getElementById("toast-msg");
+      var toastText = document.getElementById("toast-text");
+      toastText.textContent = "Copied " + name + "!";
+      toast.classList.add("active");
+
+      setTimeout(function() {
+        toast.classList.remove("active");
+      }, 2000);
+    }
+
+    async function loadDiscordData() {
+      const id = "1558650986837311488";
+      const dot = document.getElementById("discord-status-dot");
+      const text = document.getElementById("discord-status-text");
+      const avatar = document.getElementById("discord-avatar");
+
+      try {
+        const res = await fetch(`https://api.lanyard.rest/v1/users/${id}`);
+        const data = await res.json();
+
+        if (data.success && data.data) {
+          const user = data.data;
+
+          if (user.discord_user.avatar) {
+            avatar.src = `https://cdn.discordapp.com/avatars/${user.discord_user.id}/${user.discord_user.avatar}.png?size=128`;
+          }
+
+          const status = user.discord_status || "offline";
+          if (status === "online") {
+            dot.className = "absolute bottom-0 right-0 w-3.5 h-3.5 bg-emerald-500 border-2 border-[#0d0d12] rounded-full shadow-[0_0_8px_#10b981]";
+            text.textContent = "Online";
+            text.className = "text-xs text-emerald-400 font-medium";
+          } else if (status === "idle") {
+            dot.className = "absolute bottom-0 right-0 w-3.5 h-3.5 bg-amber-500 border-2 border-[#0d0d12] rounded-full";
+            text.textContent = "Idle";
+            text.className = "text-xs text-amber-400 font-medium";
+          } else if (status === "dnd") {
+            dot.className = "absolute bottom-0 right-0 w-3.5 h-3.5 bg-red-500 border-2 border-[#0d0d12] rounded-full";
+            text.textContent = "Do Not Disturb";
+            text.className = "text-xs text-red-400 font-medium";
+          } else {
+            dot.className = "absolute bottom-0 right-0 w-3.5 h-3.5 bg-zinc-600 border-2 border-[#0d0d12] rounded-full";
+            text.textContent = "Offline";
+            text.className = "text-xs text-zinc-500";
+          }
+        } else {
+          text.textContent = "@activehalosalt";
+        }
+      } catch (err) {
+        text.textContent = "@activehalosalt";
+      }
+    }
+
+    window.onload = function() {
+      loadDiscordData();
+    };
+  </script>
+</body>
+</html>ithub.io
